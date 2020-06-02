@@ -1,0 +1,25 @@
+logging:
+  level: INFO
+  loggers:
+    com.xu_he.youth: DEBUG
+    "org.hibernate.SQL":
+      level: DEBUG
+    "org.hibernate.cache":
+      level: DEBUG
+#    "org.hibernate.engine.jdbc.spi.SqlExceptionHelper":
+#      level: ALL
+
+database:
+  driverClass: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://localhost/youth?serverTimezone=UTC
+  user: test
+  password: test
+  maxWaitForConnection: 1s
+  validationQuery: "SELECT 1"
+  validationQueryTimeout: 3s
+  minSize: 8
+  maxSize: 32
+  checkConnectionWhileIdle: false
+  evictionInterval: 10s
+  minIdleTime: 1 minute
+  checkConnectionOnBorrow: true
