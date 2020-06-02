@@ -29,10 +29,6 @@ public class YouthApplication extends Application<YouthConfiguration> {
         public void configure(Configuration configuration) {
           configuration.setProperty("hibernate.show_sql", "true");
           configuration.setProperty("hibernate.format_sql", "true");
-          configuration.setProperty("hibernate.cache.use_second_level_cache", "true");
-          configuration.setProperty(
-              "hibernate.cache.region.factory_class",
-              "org.hibernate.cache.ehcache.EhCacheRegionFactory");
         }
 
         @Override
@@ -74,22 +70,6 @@ public class YouthApplication extends Application<YouthConfiguration> {
     YouthAuthFilter filter = new YouthAuthFilter(authenticator);
     environment.jersey().register(RolesAllowedDynamicFeature.class);
     environment.jersey().register(filter);
-
-    //    basicAuthenticator
-    //     YouthBasicAuthenticator basicAuthenticator =
-    //        new UnitOfWorkAwareProxyFactory(hibernate)
-    //            .create(
-    //                YouthBasicAuthenticator.class, new Class[] {UserDAO.class}, new Object[]
-    // {userDAO});
-    //    environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
-    //
-    //    environment
-    //        .jersey()
-    //        .register(
-    //            new AuthDynamicFeature(
-    //                new BasicCredentialAuthFilter.Builder<User>()
-    //                    .setAuthenticator(basicAuthenticator)
-    //                    .buildAuthFilter()));
 
     environment.jersey().register(new YouthResource(userService));
     environment.jersey().register(new YouthExceptionMapper());

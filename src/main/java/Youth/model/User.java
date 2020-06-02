@@ -6,9 +6,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -36,14 +33,6 @@ public class User implements Principal {
     @Column(name = "lng")
     private double lng;
 
-//    @OneToMany(
-//            mappedBy = "primaryUser",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//    )
-//    @JsonManagedReference
-//    private List<UserIntention> userIntentions;
-
     @Column(name = "phone_number")
     private String phoneNumber;
 
@@ -55,29 +44,5 @@ public class User implements Principal {
 
     @JsonPOJOBuilder(withPrefix = "")
     public static class UserBuilder {
-        List<UserIntention> userIntentions = new ArrayList<>();
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User tag = (User) o;
-        return Objects.equals(name, tag.name);
-    }
-
-//    @Override
-//    public String toString() {
-//        return null;
-//    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
-
-//    @Override
-//    public boolean implies(Subject subject) {
-//        return false;
-//    }
 }

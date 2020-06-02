@@ -30,7 +30,6 @@ public class UserIntentionDAO extends AbstractDAO<UserIntention> {
     DetachedCriteria subQuery = DetachedCriteria.forClass(UserIntention.class, "intention");
     subQuery.add(Restrictions.eq("intention.id.primaryUserId", id));
     subQuery.setProjection(Projections.property("intention.id.viewedUserId"));
-    log.info("Testing logging");
     List<UserIntention> us = subQuery.getExecutableCriteria(currentSession()).list();
     log.info(us.toString());
     return subQuery;

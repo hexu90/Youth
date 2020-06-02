@@ -28,7 +28,5 @@ public class GeoIndex {
 
     @JsonPOJOBuilder(withPrefix = "")
     public static class GeoIndexBuilder {
-
     }
-
 }

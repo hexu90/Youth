@@ -23,13 +23,14 @@ import java.util.List;
 @AllArgsConstructor
 public class YouthResource {
   private final UserService userService;
+  private static final String SAME_USER_ERROR_MSG = "user can not swipe himself";
 
   @GET
   @Path("/match")
   @UnitOfWork
   @Timed
-  public Response findMatches(@CookieParam("auth_user") @NotNull long userId)
-      throws YouthException {
+  @PermitAll
+  public Response findMatches(@CookieParam("auth_user") @NotNull long userId) {
     List<User> matches = userService.findAllMatches(userId);
     return Response.status(200).entity(matches).build();
   }
@@ -38,14 +39,19 @@ public class YouthResource {
   @Path("/swipe")
   @UnitOfWork
   @Timed
-  public Response swipe(SwipeRequest request, @CookieParam("auth_user") Long userId)
+  @PermitAll
+  public Response swipe(SwipeRequest request, @CookieParam("auth_user") long userId)
       throws YouthException {
-    JSONObject object = new JSONObject();
+    JSONObject response = new JSONObject();
+    if (userId == request.getViewedUserId()) {
+      response.put("message", SAME_USER_ERROR_MSG);
+      return Response.status(400).entity(response).build();
+    }
     boolean isMatching =
         userService.swipe(userId, request.getViewedUserId(), request.isLikeOrNot());
-    object.put("isMatching", isMatching);
+    response.put("isMatching", isMatching);
 
-    return Response.status(200).entity(object.toString()).build();
+    return Response.status(200).entity(response.toString()).build();
   }
 
   @GET
@@ -60,8 +66,7 @@ public class YouthResource {
       @QueryParam("size") @DefaultValue("10") int size,
       @CookieParam("auth_user") Long userId)
       throws YouthException {
-    log.info("cookie user id");
-    log.info("{}", userId);
+
 
     List<User> recommendedUser = userService.recommend(userId, lat, lng, size, radius);
     return Response.status(200).entity(recommendedUser).build();

@@ -17,7 +17,6 @@ Youth/api/RecommendUserRequest.class
 Youth/model/User.class
 Youth/model/User$UserBuilder.class
 Youth/YouthApplication.class
-Youth/authentication/YouthBasicAuthenticator.class
 Youth/model/UserMatchId$UserMatchIdBuilder.class
 Youth/authentication/CustomCredentials.class
 Youth/model/UserIntentionId.class

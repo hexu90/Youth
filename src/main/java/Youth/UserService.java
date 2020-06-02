@@ -22,6 +22,11 @@ public class UserService {
   private UserMatchDAO userMatchDAO;
   private GeoIndexDAO geoIndexDAO;
 
+  /**
+   * Handle the logic behind swipe
+   * It looks for if this is a match and returns it.
+   * At same time, it creates the use intention record.
+   */
   public boolean swipe(Long primaryUserId, Long viewedUserId, Boolean isLikeOrNot)
       throws YouthException {
     boolean matchResult = false;
@@ -32,9 +37,8 @@ public class UserService {
         Optional<UserIntention> isLikedUser =
             userIntentionDAO.isLikedUser(viewedUserId, primaryUserId);
         if (isLikedUser.isPresent()) {
-          // Match
+          // Match. Updated match table
           matchResult = true;
-          // Update match result
           Long smallerUserId = Math.min(primaryUserId, viewedUserId);
           Long largeUserId = Math.max(primaryUserId, viewedUserId);
           UserMatch machRecord =
@@ -56,7 +60,6 @@ public class UserService {
       UserIntention newIntention =
           UserIntention.builder()
               .id(intentionId)
-              .isMatching(matchResult)
               .likeOrDislike(isLikeOrNot)
               .build();
       userIntentionDAO.createOrUpdate(newIntention);
@@ -75,6 +78,7 @@ public class UserService {
     return userDAO.findByUserIds(recommendUserIds);
   }
 
+  // Find all matched users based on userId
   public List<User> findAllMatches(Long userId) {
     List<Long> matchedUsers =
         userMatchDAO.findAllMatches(userId).stream()
